@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using TableGenerator.Domain.Common.Entities;
 
-namespace TableGenerator.Domain.Feature.Entities
+namespace TableGenerator.Domain.Core.Entities
 {
     [Table(TableName)]
     public class Gender : Entity<long>

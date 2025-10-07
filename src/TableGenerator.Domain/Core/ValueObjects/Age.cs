@@ -15,7 +15,7 @@ namespace TableGenerator.Domain.Core.ValueObjects
                 );
             }
 
-            return new Age($"{age}", age);
+            return new Age($"Age: {age}", age);
         }
     }
 }

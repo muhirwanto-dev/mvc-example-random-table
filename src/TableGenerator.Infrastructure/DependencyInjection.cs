@@ -1,7 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using SingleScope.Persistence.Repository;
+using TableGenerator.Application.Interfaces.Repositories;
+using TableGenerator.Domain.Core.Entities;
 using TableGenerator.Infrastructure.Http;
+using TableGenerator.Infrastructure.Persistence.Contexts;
+using TableGenerator.Infrastructure.Persistence.Repositories;
 
 namespace TableGenerator.Infrastructure
 {
@@ -29,6 +35,11 @@ namespace TableGenerator.Infrastructure
 
         private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<LocalDbContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SqlServer")));
+            services.AddScoped<IReadRepository<Gender>, GenderRepository>();
+            services.AddScoped<IReadRepository<Hobby>, HobbyRepository>();
+            services.AddScoped<IPersonalRepository, PersonalRepository>();
+
             return services;
         }
     }

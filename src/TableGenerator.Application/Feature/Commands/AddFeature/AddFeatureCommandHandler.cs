@@ -2,7 +2,6 @@
 using MediatR;
 using TableGenerator.Application.Interfaces;
 using TableGenerator.Contracts.Dtos.Feature;
-using TableGenerator.Domain.Feature.Entities;
 
 namespace TableGenerator.Application.Feature.Commands.AddFeature
 {

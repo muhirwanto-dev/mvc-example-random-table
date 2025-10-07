@@ -1,3 +1,6 @@
+using SingleScope.Persistence.EFCore;
+using TableGenerator.Application;
+using TableGenerator.Infrastructure;
 using TableGenerator.Web.Middlewares;
 
 namespace TableGenerator.Web
@@ -16,6 +19,8 @@ namespace TableGenerator.Web
                 .AddInfrastructure(builder.Configuration);
 
             var app = builder.Build();
+
+            app.Services.UseSingleScopePersistence();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

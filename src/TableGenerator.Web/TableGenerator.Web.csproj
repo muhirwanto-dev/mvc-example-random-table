@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TableGenerator\TableGenerator.Application\TableGenerator.Application.csproj" />
-    <ProjectReference Include="..\TableGenerator\TableGenerator.Contracts\TableGenerator.Contracts.csproj" />
-    <ProjectReference Include="..\TableGenerator\TableGenerator.Infrastructure\TableGenerator.Infrastructure.csproj" />
+    <ProjectReference Include="..\TableGenerator.Application\TableGenerator.Application.csproj" />
+    <ProjectReference Include="..\TableGenerator.Contracts\TableGenerator.Contracts.csproj" />
+    <ProjectReference Include="..\TableGenerator.Infrastructure\TableGenerator.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
