@@ -5,15 +5,15 @@ VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Web", "TableGenerator.Web\TableGenerator.Web.csproj", "{2DE0EDF9-B1CE-4502-A996-4591F3BEC098}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Api", "TableGenerator\TableGenerator.Api\TableGenerator.Api.csproj", "{834CA8E1-451D-4102-904D-EB94C010B4E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Api", "TableGenerator.Api\TableGenerator.Api.csproj", "{834CA8E1-451D-4102-904D-EB94C010B4E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Application", "TableGenerator\TableGenerator.Application\TableGenerator.Application.csproj", "{4D797B6F-2CCC-44C9-8158-B89222A15E9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Application", "TableGenerator.Application\TableGenerator.Application.csproj", "{4D797B6F-2CCC-44C9-8158-B89222A15E9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Contracts", "TableGenerator\TableGenerator.Contracts\TableGenerator.Contracts.csproj", "{BE4BA006-6F49-405F-B3C9-F21FFE635E5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Contracts", "TableGenerator.Contracts\TableGenerator.Contracts.csproj", "{BE4BA006-6F49-405F-B3C9-F21FFE635E5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Domain", "TableGenerator\TableGenerator.Domain\TableGenerator.Domain.csproj", "{FC1525C9-E96A-43D0-AE3C-8FF931C458C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Domain", "TableGenerator.Domain\TableGenerator.Domain.csproj", "{FC1525C9-E96A-43D0-AE3C-8FF931C458C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Infrastructure", "TableGenerator\TableGenerator.Infrastructure\TableGenerator.Infrastructure.csproj", "{427638EF-68B7-4DBD-BE29-F8E15102EAFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableGenerator.Infrastructure", "TableGenerator.Infrastructure\TableGenerator.Infrastructure.csproj", "{427638EF-68B7-4DBD-BE29-F8E15102EAFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

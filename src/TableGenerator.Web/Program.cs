@@ -1,5 +1,3 @@
-using TableGenerator.Application;
-using TableGenerator.Infrastructure;
 using TableGenerator.Web.Middlewares;
 
 namespace TableGenerator.Web

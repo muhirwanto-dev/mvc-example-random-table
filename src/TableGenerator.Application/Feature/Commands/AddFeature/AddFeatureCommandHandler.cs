@@ -12,7 +12,7 @@ namespace TableGenerator.Application.Feature.Commands.AddFeature
     {
         public Task<ErrorOr<FeatureResponseDto>> Handle(AddFeatureCommand request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(ErrorOrFactory.From(_mapper.Map<Template, FeatureResponseDto>(new Template { Description = "Template added" })));
+            return Task.FromResult(ErrorOrFactory.From(_mapper.Map<Gender, FeatureResponseDto>(new Gender { Description = "Template added" })));
         }
     }
 }
