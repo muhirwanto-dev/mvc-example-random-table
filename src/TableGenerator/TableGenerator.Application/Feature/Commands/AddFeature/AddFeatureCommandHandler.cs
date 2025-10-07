@@ -1,0 +1,18 @@
+﻿using ErrorOr;
+using MediatR;
+using TableGenerator.Application.Interfaces;
+using TableGenerator.Contracts.Dtos.Feature;
+using TableGenerator.Domain.Feature.Entities;
+
+namespace TableGenerator.Application.Feature.Commands.AddFeature
+{
+    public class AddFeatureCommandHandler(
+        IMapper _mapper
+        ) : IRequestHandler<AddFeatureCommand, ErrorOr<FeatureResponseDto>>
+    {
+        public Task<ErrorOr<FeatureResponseDto>> Handle(AddFeatureCommand request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(ErrorOrFactory.From(_mapper.Map<Template, FeatureResponseDto>(new Template { Description = "Template added" })));
+        }
+    }
+}

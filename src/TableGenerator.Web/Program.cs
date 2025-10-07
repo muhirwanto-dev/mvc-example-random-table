@@ -1,3 +1,7 @@
+using TableGenerator.Application;
+using TableGenerator.Infrastructure;
+using TableGenerator.Web.Middlewares;
+
 namespace TableGenerator.Web
 {
     public class Program
@@ -8,6 +12,10 @@ namespace TableGenerator.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services
+                .AddPresentation(builder.Configuration)
+                .AddApplication(builder.Configuration)
+                .AddInfrastructure(builder.Configuration);
 
             var app = builder.Build();
 
@@ -21,8 +29,8 @@ namespace TableGenerator.Web
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseMiddleware<ApiExceptionHandleMiddleware>();
 
             app.MapStaticAssets();
             app.MapControllerRoute(

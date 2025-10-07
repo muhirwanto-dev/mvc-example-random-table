@@ -4,6 +4,17 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <FileVersion>1.0.0.1007</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SingleScope.Common" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TableGenerator\TableGenerator.Application\TableGenerator.Application.csproj" />
+    <ProjectReference Include="..\TableGenerator\TableGenerator.Contracts\TableGenerator.Contracts.csproj" />
+    <ProjectReference Include="..\TableGenerator\TableGenerator.Infrastructure\TableGenerator.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>
