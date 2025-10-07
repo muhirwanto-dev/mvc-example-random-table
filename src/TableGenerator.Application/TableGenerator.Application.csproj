@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <FileVersion>1.0.0.1007</FileVersion>
@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TableGenerator.Contracts\TableGenerator.Contracts.csproj">
-      <PrivateAssets>all</PrivateAssets>
-    </ProjectReference>
+    <ProjectReference Include="..\TableGenerator.Contracts\TableGenerator.Contracts.csproj" />
     <ProjectReference Include="..\TableGenerator.Domain\TableGenerator.Domain.csproj" />
   </ItemGroup>
 

@@ -1,8 +1,206 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Data Peserta";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <h1 class="display-4 text-center">Data Peserta Ujian</h1>
+
+    <div class="row mb-3">
+        <div class="col">
+            <button id="btnGenerate" class="btn btn-primary">
+                <i class="fas fa-magic"></i> Generate Data (1000 Rows)
+            </button>
+            <button id="btnReset" class="btn btn-warning ml-2">
+                <i class="fas fa-sync-alt"></i> Reset Table
+            </button>
+            <button id="btnSubmit" class="btn btn-success ml-2" disabled>
+                <i class="fas fa-paper-plane"></i> Submit Data
+            </button>
+        </div>
+    </div>
+
+    <div id="alertArea" class="mt-3"></div>
+
+    <div class="table-responsive">
+        <table id="dataTable" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Hobby</th>
+                    <th scope="col">Age</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Data Awal untuk Master
+            const GENDERS = ['Pria', 'Wanita', 'F'];
+            const HOBBIES = ['Sepak Bola', 'Renang', 'Badminton', 'Bersepeda', 'Membaca', 'Menulis', 'Menggambar', 'Coding', 'Tidur', 'Makan'];
+
+            // Data untuk Peserta Tes (sesuai soal)
+            const TEST_NAME = 'Peserta Test';
+            const TEST_EMAIL = 'peserta@test.com'; // Digunakan di sisi backend jika perlu
+            const TEST_AGE = 25; // Usia default
+            const NUMBER_OF_ROWS = 1000;
+
+            let isDataGenerated = false;
+
+            // Fungsi untuk membuat string acak alfanumerik (seperti ABCDE819)
+            function generateRandomString(length) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+
+            // Fungsi untuk menampilkan Alert
+            function showAlert(message, type) {
+                const alertHtml = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `;
+                $('#alertArea').html(alertHtml);
+            }
+
+            // ===========================================
+            // 1. GENERATE DATA (CLIENT-SIDE JAVASCRIPT)
+            // ===========================================
+            $('#btnGenerate').on('click', function () {
+                const $tbody = $('#dataTable tbody');
+                $tbody.empty(); // Kosongkan tabel
+                let rowsData = [];
+
+                for (let i = 1; i <= NUMBER_OF_ROWS; i++) {
+                    const id = i;
+
+                    // Gunakan nama peserta test untuk sebagian data (misal kelipatan 10)
+                    let name = (i % 10 === 0) ? TEST_NAME + ' ' + i : generateRandomString(7);
+
+                    // Generate Gender & Hobby acak
+                    const gender = GENDERS[Math.floor(Math.random() * GENDERS.length)];
+                    const hobby = HOBBIES[Math.floor(Math.random() * HOBBIES.length)];
+
+                    // Generate Age acak antara 18-40
+                    const age = Math.floor(Math.random() * (40 - 18 + 1)) + 18;
+
+                    // Khusus untuk soal nomor 4 (Validasi Backend):
+                    // Jika baris adalah kelipatan 100 DAN Gender adalah 'F', set Hobby menjadi 'Tidur'
+                    if (i % 100 === 0 && gender === 'F') {
+                         hobby = 'Tidur'; // Pastikan hobi yang di-assign sesuai dengan string hobi di list HOBBIES
+                    }
+
+
+                    // Tambahkan ke array untuk dikirimkan
+                    rowsData.push({
+                        Id: id,
+                        Name: name,
+                        Gender: gender,
+                        Hobby: hobby,
+                        Age: age
+                    });
+
+                    // Tambahkan baris ke tampilan tabel
+                    $tbody.append(`
+                        <tr>
+                            <td>${id}</td>
+                            <td>${name}</td>
+                            <td>${gender}</td>
+                            <td>${hobby}</td>
+                            <td>${age}</td>
+                        </tr>
+                    `);
+                }
+
+                $tbody.data('submissionData', rowsData); // Simpan data di tbody untuk submit
+                isDataGenerated = true;
+                $('#btnSubmit').prop('disabled', false);
+                showAlert(`Berhasil men-generate ${NUMBER_OF_ROWS} baris data!`, 'info');
+            });
+
+            // ===========================================
+            // 2. RESET TABLE
+            // ===========================================
+            $('#btnReset').on('click', function () {
+                $('#dataTable tbody').empty();
+                $('#dataTable tbody').removeData('submissionData');
+                $('#btnSubmit').prop('disabled', true);
+                isDataGenerated = false;
+                $('#alertArea').empty();
+                showAlert('Tabel telah direset.', 'secondary');
+            });
+
+            // ===========================================
+            // 3. SUBMIT DATA VIA AJAX
+            // ===========================================
+            $('#btnSubmit').on('click', function () {
+                if (!isDataGenerated) {
+                    showAlert('Silakan generate data terlebih dahulu.', 'warning');
+                    return;
+                }
+
+                const dataToSubmit = $('#dataTable tbody').data('submissionData');
+                if (!dataToSubmit || dataToSubmit.length === 0) {
+                    showAlert('Tidak ada data untuk dikirim.', 'warning');
+                    return;
+                }
+
+                // Matikan tombol saat proses
+                $('#btnSubmit').prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Submitting...');
+
+                // Panggilan Ajax ke Controller
+                // Asumsi: Anda memiliki Controller/Action bernama 'Home/SubmitData'
+                $.ajax({
+                    url: '@Url.Action("SubmitData", "Home")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataToSubmit),
+                    success: function (response) {
+                        // Response Sukses dari Controller
+                        if (response.success) {
+                            showAlert(`SUCCESS! ${response.message}`, 'success');
+                            $('#btnSubmit').prop('disabled', true); // Matikan submit setelah sukses
+                        } else {
+                            // Response Gagal dari Controller (misal: gagal validasi database)
+                            showAlert(`ERROR! ${response.message}`, 'danger');
+                            $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
+                        }
+                    },
+                    error: function (xhr) {
+                        // Error Jaringan/Server (Status 500, 404, dll)
+                        let errorMessage = 'Terjadi kesalahan pada server.';
+                        try {
+                            const errorJson = JSON.parse(xhr.responseText);
+                            errorMessage = errorJson.message || errorMessage;
+                        } catch (e) {
+                            // Handle case where responseText is not JSON (e.g., standard HTML error page)
+                            errorMessage = xhr.responseText.substring(0, 200) + '...';
+                        }
+
+                        // Khusus untuk error validasi kelipatan 100 dari backend (dibuat THROW di SP)
+                        if (xhr.status === 500 && xhr.responseText.includes("tidak menyukai hobi tidur")) {
+                            errorMessage = "VALIDASI BACKEND GAGAL: " + xhr.responseText;
+                        }
+
+                        showAlert(`AJAX GAGAL. ${errorMessage}`, 'danger');
+                        $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
+                    }
+                });
+            });
+        });
+    </script>
+}
