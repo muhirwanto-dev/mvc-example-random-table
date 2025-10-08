@@ -27,9 +27,9 @@ namespace TableGenerator.Web.Controllers
         {
             var command = new BulkInsertPersonalDataCommand(
                 new BulkInsertPersonalDataRequestDto(
-                    Name: "Test User",
+                    Name: "Muhammad Irwanto",
                     Age: 30,
-                    Email: "",
+                    Email: "muhammadirwanto.dev@gmail.com",
                     Payload: data
                     ));
             var result = _mediator.Send(command).Result;

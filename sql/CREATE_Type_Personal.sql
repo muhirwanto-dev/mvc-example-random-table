@@ -1,0 +1,9 @@
+CREATE TYPE dbo.PersonalTableType AS TABLE
+(
+    ID BIGINT NULL,
+    Name NVARCHAR(255) NOT NULL,
+	GenderId BIGINT NOT NULL,
+	HobbyId BIGINT NOT NULL,
+    AGE INT NOT NULL
+);
+GO

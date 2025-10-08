@@ -2,9 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using SingleScope.Persistence.Repository;
+using SingleScope.Persistence.EFCore;
 using TableGenerator.Application.Interfaces.Repositories;
-using TableGenerator.Domain.Core.Entities;
 using TableGenerator.Infrastructure.Http;
 using TableGenerator.Infrastructure.Persistence.Contexts;
 using TableGenerator.Infrastructure.Persistence.Repositories;
@@ -35,9 +34,7 @@ namespace TableGenerator.Infrastructure
 
         private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<LocalDbContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SqlServer")));
-            services.AddScoped<IReadRepository<Gender>, GenderRepository>();
-            services.AddScoped<IReadRepository<Hobby>, HobbyRepository>();
+            services.AddEfCorePersistence<LocalDbContext>(builder => builder.UseSqlServer(configuration.GetConnectionString("SqlServer")));
             services.AddScoped<IPersonalRepository, PersonalRepository>();
 
             return services;

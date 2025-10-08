@@ -1,18 +1,19 @@
 ﻿using ErrorOr;
 using MediatR;
-using TableGenerator.Application.Interfaces;
+using TableGenerator.Application.Interfaces.Repositories;
 
 namespace TableGenerator.Application.Core.Commands.BulkInsertPersonalData
 {
     public class BulkInsertPersonalDataCommandHandler(
-        IMapper _mapper
+        IPersonalRepository _personalRepository
         ) : IRequestHandler<BulkInsertPersonalDataCommand, ErrorOr<Success>>
     {
-        public Task<ErrorOr<Success>> Handle(BulkInsertPersonalDataCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<Success>> Handle(BulkInsertPersonalDataCommand request, CancellationToken cancellationToken)
         {
+            await _personalRepository.TruncateAsync(cancellationToken);
+            await _personalRepository.BulkInsertAsync(request.Data.Payload, cancellationToken);
 
-
-            return Task.FromResult(ErrorOrFactory.From(Result.Success));
+            return ErrorOrFactory.From(Result.Success);
         }
     }
 }
