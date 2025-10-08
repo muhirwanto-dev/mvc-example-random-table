@@ -1,0 +1,5 @@
+CREATE TYPE dbo.StringListType AS TABLE
+(
+    Name NVARCHAR(128) NOT NULL UNIQUE 
+);
+GO
