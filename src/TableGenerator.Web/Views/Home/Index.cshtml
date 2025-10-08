@@ -59,13 +59,13 @@
                 Swal.fire({
                     title: title,
                     text: text,
-                    icon: icon, // 'success', 'error', 'warning', 'info', 'question'
+                    icon: icon ?? 'info', // 'success', 'error', 'warning', 'info', 'question'
                     confirmButtonText: 'OK'
                 });
             }
 
-            function showAlert(title, text) {
-                showAlert(title, text, 'info');
+            function showInfo(text) {
+                showAlert('Info', text, 'info');
             }
 
             function showError(text) {
@@ -76,9 +76,6 @@
                 showAlert('Success', text, 'success');
             }
 
-            // ===========================================
-            // 1. GENERATE DATA (CLIENT-SIDE JAVASCRIPT)
-            // ===========================================
             $('#btnGenerate').on('click', function () {
                 const $tbody = $('#dataTable tbody');
                 let rowsData = [];
@@ -117,12 +114,8 @@
                 isDataGenerated = true;
 
                 $('#btnSubmit').prop('disabled', false);
-                showSuccess(`Berhasil men-generate ${NUMBER_OF_ROWS} baris data!`);
             });
 
-            // ===========================================
-            // 2. RESET TABLE
-            // ===========================================
             $('#btnReset').on('click', function () {
                 $('#dataTable tbody').empty();
                 $('#dataTable tbody').removeData('submissionData');
@@ -133,59 +126,39 @@
                 showAlert('Reset Data', 'Tabel telah direset.');
             });
 
-            // ===========================================
-            // 3. SUBMIT DATA VIA AJAX
-            // ===========================================
             $('#btnSubmit').on('click', function () {
                 if (!isDataGenerated) {
-                    showAlert('Silakan generate data terlebih dahulu.', 'warning');
+                    showInfo('Silakan generate data terlebih dahulu.');
                     return;
                 }
 
                 const dataToSubmit = $('#dataTable tbody').data('submissionData');
                 if (!dataToSubmit || dataToSubmit.length === 0) {
-                    showAlert('Tidak ada data untuk dikirim.', 'warning');
+                    showAlert('Data Tidak Valid', 'Tidak ada data untuk dikirim.', 'warning');
                     return;
                 }
 
-                // Matikan tombol saat proses
                 $('#btnSubmit').prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Submitting...');
 
-                // Panggilan Ajax ke Controller
-                // Asumsi: Anda memiliki Controller/Action bernama 'Home/SubmitData'
                 $.ajax({
-                    url: '@Url.Action("SubmitData", "Home")',
+                    url: '@Url.Action("Submit", "Home")',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(dataToSubmit),
                     success: function (response) {
-                        // Response Sukses dari Controller
-                        if (response.success) {
-                            showAlert(`SUCCESS! ${response.message}`, 'success');
-                            $('#btnSubmit').prop('disabled', true); // Matikan submit setelah sukses
-                        } else {
-                            // Response Gagal dari Controller (misal: gagal validasi database)
-                            showAlert(`ERROR! ${response.message}`, 'danger');
-                            $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
-                        }
+                        showSuccess(`Berhasil submit data`);
+                        $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
                     },
                     error: function (xhr) {
-                        // Error Jaringan/Server (Status 500, 404, dll)
                         let errorMessage = 'Terjadi kesalahan pada server.';
                         try {
                             const errorJson = JSON.parse(xhr.responseText);
                             errorMessage = errorJson.message || errorMessage;
                         } catch (e) {
-                            // Handle case where responseText is not JSON (e.g., standard HTML error page)
                             errorMessage = xhr.responseText.substring(0, 200) + '...';
                         }
 
-                        // Khusus untuk error validasi kelipatan 100 dari backend (dibuat THROW di SP)
-                        if (xhr.status === 500 && xhr.responseText.includes("tidak menyukai hobi tidur")) {
-                            errorMessage = "VALIDASI BACKEND GAGAL: " + xhr.responseText;
-                        }
-
-                        showAlert(`AJAX GAGAL. ${errorMessage}`, 'danger');
+                        showError(`Failure. ${errorMessage}`);
                         $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
                     }
                 });
