@@ -86,10 +86,13 @@
                     const id = i;
 
                     let name = generateRandomString(7);
+                    
+                    const maxAge = 40;
+                    const minAge = 18;
 
                     const gender = GENDERS[Math.floor(Math.random() * GENDERS.length)];
                     const hobby = HOBBIES[Math.floor(Math.random() * HOBBIES.length)];
-                    const age = Math.floor(Math.random() * (40 - 18 + 1)) + 18;
+                    const age = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
 
                     rowsData.push({
                         Id: id,
@@ -153,12 +156,14 @@
                         let errorMessage = 'An error occurred on the server.';
                         try {
                             const errorJson = JSON.parse(xhr.responseText);
-                            errorMessage = errorJson.message || errorMessage;
+                            if (errorJson) {
+                                errorMessage = `(${errorJson.status}) ${errorJson.title}: ${errorJson.detail}`;
+                            }
                         } catch (e) {
                             errorMessage = xhr.responseText.substring(0, 200) + '...';
                         }
 
-                        showError(`Failure:\n${errorMessage}`);
+                        showError(errorMessage);
                         $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
                     }
                 });
