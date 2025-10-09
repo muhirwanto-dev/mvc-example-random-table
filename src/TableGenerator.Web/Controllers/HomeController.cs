@@ -3,11 +3,13 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TableGenerator.Application.Core.Commands.BulkInsertPersonalData;
 using TableGenerator.Contracts.Dtos;
+using TableGenerator.Web.Extensions;
 using TableGenerator.Web.Models;
 
 namespace TableGenerator.Web.Controllers
 {
     public class HomeController(
+        ILogger<HomeController> _logger,
         ISender _mediator)
         : BaseController
     {
@@ -23,8 +25,10 @@ namespace TableGenerator.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit([FromBody] IList<PersonalDataRequestDto> data)
+        public IActionResult Submit([FromBody] IList<PersonalDataRequestDto> data, CancellationToken cancellationToken)
         {
+            _logger.LogApiInvoked(HttpContext, LogLevel.Information);
+
             var command = new BulkInsertPersonalDataCommand(
                 new BulkInsertPersonalDataRequestDto(
                     Name: "Muhammad Irwanto",
@@ -32,7 +36,7 @@ namespace TableGenerator.Web.Controllers
                     Email: "muhammadirwanto.dev@gmail.com",
                     Payload: data
                     ));
-            var result = _mediator.Send(command).Result;
+            var result = _mediator.Send(command, cancellationToken).Result;
 
             return result.Match(
                 onValue: value => Ok(),

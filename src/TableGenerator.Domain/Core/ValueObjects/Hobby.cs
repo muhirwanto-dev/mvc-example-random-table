@@ -5,8 +5,6 @@ namespace TableGenerator.Domain.Core.ValueObjects
 {
     public class Hobby(string name, string value) : SmartEnum<Hobby, string>(name, value)
     {
-        public const string InvalidHobbyMessage = "An error occured on row {0}. He doesn't like '{1}'";
-
         public static readonly Hobby Sleeping = new(nameof(Sleeping), "Tidur");
 
         public static Hobby FromString(string hobby) =>
@@ -18,7 +16,7 @@ namespace TableGenerator.Domain.Core.ValueObjects
             {
                 return Error.Validation(
                     code: "Hobby.Invalid",
-                    description: string.Format(InvalidHobbyMessage, row, Sleeping.Value)
+                    description: $"Row {row} error, he/she doesn't like {Sleeping}."
                 );
             }
 

@@ -123,18 +123,18 @@
 
                 isDataGenerated = false;
 
-                showAlert('Reset Data', 'Tabel telah direset.');
+                showAlert('Reset Data', 'The table has been reset.');
             });
 
             $('#btnSubmit').on('click', function () {
                 if (!isDataGenerated) {
-                    showInfo('Silakan generate data terlebih dahulu.');
+                    showInfo('Please generate data first.');
                     return;
                 }
 
                 const dataToSubmit = $('#dataTable tbody').data('submissionData');
                 if (!dataToSubmit || dataToSubmit.length === 0) {
-                    showAlert('Data Tidak Valid', 'Tidak ada data untuk dikirim.', 'warning');
+                    showAlert('Invalid Data', 'There is no data to submit.', 'warning');
                     return;
                 }
 
@@ -146,11 +146,11 @@
                     contentType: 'application/json',
                     data: JSON.stringify(dataToSubmit),
                     success: function (response) {
-                        showSuccess(`Berhasil submit data`);
+                        showSuccess(`Successfully submitted data`);
                         $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
                     },
                     error: function (xhr) {
-                        let errorMessage = 'Terjadi kesalahan pada server.';
+                        let errorMessage = 'An error occurred on the server.';
                         try {
                             const errorJson = JSON.parse(xhr.responseText);
                             errorMessage = errorJson.message || errorMessage;
@@ -158,7 +158,7 @@
                             errorMessage = xhr.responseText.substring(0, 200) + '...';
                         }
 
-                        showError(`Failure. ${errorMessage}`);
+                        showError(`Failure:\n${errorMessage}`);
                         $('#btnSubmit').prop('disabled', false).html('<i class="fas fa-paper-plane"></i> Submit Data');
                     }
                 });
